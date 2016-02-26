@@ -15,12 +15,8 @@ public class ContactImplTest {
     }
 
     @Test
-    public void contactIsNull(){
+    public void isContactNull(){
         Assert.assertNull(contact);
-    }
-
-    @Test
-    public void contactIsNotNull(){
         newContact();
         Assert.assertNotNull(contact);
     }
