@@ -47,13 +47,13 @@ public class ContactImplTest {
         newContact(-2,"Below Zero","I am below 0");
     }
 
-    @Test(expected = NullPointerException .class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsExceptionBecauseNameIsNull(){
         newContact(44,null,"I am nothing");
 
     }
 
-    @Test(expected = NullPointerException .class)
+    @Test(expected = NullPointerException.class)
     public void constructorThrowsExceptionBecauseNotesIsNull(){
         newContact(44,"Null Notes", null);
 
