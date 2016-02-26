@@ -24,6 +24,9 @@ public class ContactImplTest {
     @Test
     public void isContactDetailsCorrect(){
         newContact(1,"David Wright","Hello World");
+        Assert.assertEquals(1, contact.getId());
+        Assert.assertEquals("David Wright", contact.getName());
+        Assert.assertEquals("Hello World", contact.getNotes());
     }
 
     @Test
