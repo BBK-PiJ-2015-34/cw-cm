@@ -1,4 +1,5 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -10,12 +11,23 @@ public class ContactImplTest {
 
     @After
     public void tearDown() throws Exception {
+        contact = null;
+    }
 
+    @Test
+    public void contactIsNull(){
+        Assert.assertNull(contact);
+    }
+
+    @Test
+    public void contactIsNotNull(){
+        newContact();
+        Assert.assertNotNull(contact);
     }
 
     @Test
     public void testGetId() throws Exception {
-        newContact();
+
     }
 
     @Test
