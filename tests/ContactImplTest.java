@@ -1,12 +1,12 @@
 import org.junit.After;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by davidwright on 21/02/2016.
  */
 public class ContactImplTest {
+    private Contact contact;
+
 
     @After
     public void tearDown() throws Exception {
@@ -15,7 +15,7 @@ public class ContactImplTest {
 
     @Test
     public void testGetId() throws Exception {
-
+        newContact();
     }
 
     @Test
@@ -31,5 +31,10 @@ public class ContactImplTest {
     @Test
     public void testAddNotes() throws Exception {
 
+    }
+
+    private void newContact(){
+        contact = new ContactImpl(1,"David Wright","Hello World"); {
+        }
     }
 }
