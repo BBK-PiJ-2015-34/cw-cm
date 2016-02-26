@@ -17,8 +17,13 @@ public class ContactImplTest {
     @Test
     public void isContactNull(){
         Assert.assertNull(contact);
-        newContact();
+        newContact(1,"David Wright","Hello World");
         Assert.assertNotNull(contact);
+    }
+
+    @Test
+    public void isContactDetailsCorrect(){
+        newContact(1,"David Wright","Hello World");
     }
 
     @Test
@@ -41,8 +46,7 @@ public class ContactImplTest {
 
     }
 
-    private void newContact(){
-        contact = new ContactImpl(1,"David Wright","Hello World"); {
-        }
+    private void newContact(int id, String name, String note){
+        contact = new ContactImpl(id, name, note);
     }
 }
