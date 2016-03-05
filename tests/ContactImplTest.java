@@ -31,7 +31,7 @@ public class ContactImplTest {
 
     @Test
     public void isContactDetailsWith2ParametersCorrect(){
-        newContact2(2,"June Whitfield");
+        newContactWithOutNote(2,"June Whitfield");
         Assert.assertEquals(2, contact.getId());
         Assert.assertEquals("June Whitfield", contact.getName());
         Assert.assertEquals("", contact.getNotes());
@@ -58,6 +58,15 @@ public class ContactImplTest {
         newContact(44,"Null Notes", null);
 
     }
+    
+    @Test
+    public  void isNoteAddedToContact(){
+        newContactWithOutNote(2,"June Whitfield");
+        contact.addNotes("I am an actor");
+        Assert.assertEquals("I am an actor", contact.getNotes());
+        contact.addNotes(" on stage and tv");
+        Assert.assertEquals("I am an actor on stage and tv", contact.getNotes());
+    }
 
     @Test
     public void testGetId() throws Exception {
@@ -83,7 +92,7 @@ public class ContactImplTest {
         contact = new ContactImpl(id, name, note);
     }
 
-    private void newContact2(int id, String name){
+    private void newContactWithOutNote(int id, String name){
         contact = new ContactImpl(id, name);
     }
 }
