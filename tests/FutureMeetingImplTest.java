@@ -35,12 +35,17 @@ public class FutureMeetingImplTest {
     }
 
     @Test
-    public void isFutureMeetingCalendarParametersCorrect(){
+    public void isFutureMeetingParametersCorrect(){
         contacts = CreateContacts();
         newFutureMeeting(1,CreateCalendar(31,7,2016),contacts);
         Assert.assertEquals(futureMeeting.getId(),1);
         Assert.assertEquals(futureMeeting.getDate().get(Calendar.MONTH),7);
         Assert.assertNotNull(futureMeeting.getContacts());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorExceptionThrownWhenContactsEmpty(){
+        newFutureMeeting(1,CreateCalendar(31,7,2016),new HashSet<Contact>());
     }
 
     @Test(expected = IllegalArgumentException.class)
