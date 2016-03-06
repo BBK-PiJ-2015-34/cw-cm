@@ -9,16 +9,14 @@ import java.util.Set;
 /**
  * Created by davidwright on 05/03/2016.
  */
-public class MeetingImplTest {
+public class FutureMeetingImplTest {
 
     private FutureMeeting futureMeeting;
-    private PastMeeting pastmeeting;
     private Set<Contact> contacts;
 
     @After
     public void tearDown() throws Exception {
         futureMeeting = null;
-        pastmeeting = null;
         contacts = null;
     }
 
