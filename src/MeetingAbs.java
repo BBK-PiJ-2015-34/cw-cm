@@ -1,5 +1,4 @@
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Set;
 
 
@@ -8,13 +7,42 @@ import java.util.Set;
  */
 public abstract class MeetingAbs implements Meeting {
 
-    private int id;
-    private Calendar date;
-    private Set<Contact> contacts;
+    protected int id;
+    protected Calendar date;
+    protected Set<Contact> contacts;
 
-    public MeetingAbs(int id, Date date, Set<Contact> contacts){
+    public MeetingAbs(int id, Calendar date, Set<Contact> contacts) throws IllegalArgumentException, NullPointerException {
+        if (id <= 0){
+            throw new IllegalArgumentException();
+        }
+        if (date == null){
+            throw new NullPointerException();
+        }
+        if (contacts == null){
+            throw new NullPointerException();
+        }
+        if(contacts.isEmpty()){
+            throw new IllegalArgumentException();
+        }
+
         this.id = id;
-        this.date.setTime(date);
+        this.date = date;
         this.contacts = contacts;
     }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public Calendar getDate() {
+        return date;
+    }
+
+    @Override
+    public Set<Contact> getContacts() {
+        return contacts;
+    }
+
 }

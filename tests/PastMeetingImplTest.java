@@ -60,4 +60,10 @@ public class PastMeetingImplTest {
     public void constructorExceptionThrownWhenContactsEmpty(){
         newPastMeeting(1,CreateCalendar(31,7,2016),new HashSet<Contact>(),"A number of issues came up ..");
     }
+
+    @Test(expected = NullPointerException.class)
+    public void PastMeetingConstructorThrowsExceptionForNullNote(){
+        contacts = CreateContacts();
+        newPastMeeting(2,CreateCalendar(31,7,2016),contacts,null);
+    }
 }

@@ -1,11 +1,18 @@
-import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by davidwright on 06/03/2016.
  */
 public class ContactManagerImpl implements ContactManager {
+
+    private HashMap<Integer, Contact> contactsMap;
+    private int contactsMapIndex;
+
+    public ContactManagerImpl(){
+        contactsMap = new HashMap<>();
+        contactsMapIndex = 1;
+    }
+
     @Override
     public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
         return 0;
@@ -53,12 +60,22 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public int addNewContact(String name, String notes) {
-        return 0;
+        contactsMap.put(contactsMapIndex,new ContactImpl(contactsMapIndex,name,notes));
+        return contactsMapIndex++;
     }
 
     @Override
     public Set<Contact> getContacts(String name) {
-        return null;
+        Set<Contact> sc = new HashSet<>();
+
+        Iterator<Map.Entry<Integer,Contact>> iterator = contactsMap.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<Integer,Contact> contactEntry = iterator.next();
+            if(contactEntry.getValue().getName() == name){
+                sc.add(contactEntry.getValue());
+            }
+        }
+        return sc;
     }
 
     @Override
