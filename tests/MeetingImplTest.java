@@ -12,16 +12,18 @@ import java.util.Set;
 public class MeetingImplTest {
 
     private FutureMeeting futureMeeting;
+    private PastMeeting pastmeeting;
     private Set<Contact> contacts;
 
     @After
     public void tearDown() throws Exception {
         futureMeeting = null;
+        pastmeeting = null;
         contacts = null;
     }
 
     @Test
-    public void isMeetingNull(){
+    public void isFutureMeetingNull(){
         Assert.assertNull(futureMeeting);
         contacts = CreateContacts();
         newMeeting(1,CreateCalendar(31,7,2016),contacts);
@@ -35,7 +37,7 @@ public class MeetingImplTest {
     }
 
     @Test
-    public void isMeetingCalendarParametersCorrect(){
+    public void isFutureMeetingCalendarParametersCorrect(){
         contacts = CreateContacts();
         newMeeting(1,CreateCalendar(31,7,2016),contacts);
         Assert.assertEquals(futureMeeting.getId(),1);
@@ -44,25 +46,25 @@ public class MeetingImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsExceptionForIDZero(){
+    public void FutureMeetingConstructorThrowsExceptionForIDZero(){
         contacts = CreateContacts();
         newMeeting(0,CreateCalendar(31,7,2016),contacts);
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void constructorThrowsExceptionForIDBelowZero(){
+    public void FutureMeetingConstructorThrowsExceptionForIDBelowZero(){
         contacts = CreateContacts();
         newMeeting(-1,CreateCalendar(31,7,2016),contacts);
     }
 
     @Test(expected = NullPointerException.class)
-    public void constructorThrowsExceptionForNullDate(){
+    public void FutureMeetingConstructorThrowsExceptionForNullDate(){
         contacts = CreateContacts();
         newMeeting(2,null,contacts);
     }
 
     @Test(expected = NullPointerException.class)
-    public void constructorThrowsExceptionForNullContacts(){
+    public void FutureMeetingConstructorThrowsExceptionForNullContacts(){
         contacts = CreateContacts();
         newMeeting(2,CreateCalendar(31,7,2016),null);
     }
