@@ -24,7 +24,7 @@ public class FutureMeetingImplTest {
     public void isFutureMeetingNull(){
         Assert.assertNull(futureMeeting);
         contacts = CreateContacts();
-        newMeeting(1,CreateCalendar(31,7,2016),contacts);
+        newFutureMeeting(1,CreateCalendar(31,7,2016),contacts);
         Assert.assertNotNull(futureMeeting);
     }
 
@@ -37,7 +37,7 @@ public class FutureMeetingImplTest {
     @Test
     public void isFutureMeetingCalendarParametersCorrect(){
         contacts = CreateContacts();
-        newMeeting(1,CreateCalendar(31,7,2016),contacts);
+        newFutureMeeting(1,CreateCalendar(31,7,2016),contacts);
         Assert.assertEquals(futureMeeting.getId(),1);
         Assert.assertEquals(futureMeeting.getDate().get(Calendar.MONTH),7);
         Assert.assertNotNull(futureMeeting.getContacts());
@@ -46,25 +46,25 @@ public class FutureMeetingImplTest {
     @Test(expected = IllegalArgumentException.class)
     public void FutureMeetingConstructorThrowsExceptionForIDZero(){
         contacts = CreateContacts();
-        newMeeting(0,CreateCalendar(31,7,2016),contacts);
+        newFutureMeeting(0,CreateCalendar(31,7,2016),contacts);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void FutureMeetingConstructorThrowsExceptionForIDBelowZero(){
         contacts = CreateContacts();
-        newMeeting(-1,CreateCalendar(31,7,2016),contacts);
+        newFutureMeeting(-1,CreateCalendar(31,7,2016),contacts);
     }
 
     @Test(expected = NullPointerException.class)
     public void FutureMeetingConstructorThrowsExceptionForNullDate(){
         contacts = CreateContacts();
-        newMeeting(2,null,contacts);
+        newFutureMeeting(2,null,contacts);
     }
 
     @Test(expected = NullPointerException.class)
     public void FutureMeetingConstructorThrowsExceptionForNullContacts(){
         contacts = CreateContacts();
-        newMeeting(2,CreateCalendar(31,7,2016),null);
+        newFutureMeeting(2,CreateCalendar(31,7,2016),null);
     }
 
     private Set<Contact> CreateContacts(){
@@ -75,7 +75,7 @@ public class FutureMeetingImplTest {
         return contacts;
     }
 
-    private void newMeeting(int id, Calendar cal, Set<Contact> conts){
+    private void newFutureMeeting(int id, Calendar cal, Set<Contact> conts){
         futureMeeting = new FutureMeetingImpl(id,cal,conts);
     }
 
