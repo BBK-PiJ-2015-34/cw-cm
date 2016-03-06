@@ -20,14 +20,6 @@ public class PastMeetingImplTest {
         contacts = null;
     }
 
-    @Test
-    public void isPastMeetingNull(){
-        Assert.assertNull(pastMeeting);
-        contacts = CreateContacts();
-        newFutureMeeting(1,CreateCalendar(31,7,2016),contacts,"A number of issuess came up ..");
-        Assert.assertNotNull(pastMeeting);
-    }
-
     private Calendar CreateCalendar(int day, int month, int year) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, day);
@@ -42,8 +34,30 @@ public class PastMeetingImplTest {
         return contacts;
     }
 
-    private void newFutureMeeting(int id, Calendar cal, Set<Contact> conts, String notes){
+    private void newPastMeeting(int id, Calendar cal, Set<Contact> conts, String notes){
         pastMeeting = new PastMeetingImpl(id,cal,conts,notes);
     }
 
+    @Test
+    public void isPastMeetingNull(){
+        Assert.assertNull(pastMeeting);
+        contacts = CreateContacts();
+        newPastMeeting(1,CreateCalendar(31,7,2016),contacts,"A number of issues came up ..");
+        Assert.assertNotNull(pastMeeting);
+    }
+
+    @Test
+    public void isPastMeetingParametersCorrect(){
+        contacts = CreateContacts();
+        newPastMeeting(1,CreateCalendar(31,7,2016),contacts,"A number of issues came up ..");
+        Assert.assertEquals(pastMeeting.getId(),1);
+        Assert.assertEquals(pastMeeting.getDate().get(Calendar.DAY_OF_MONTH),31);
+        Assert.assertNotNull(pastMeeting.getContacts());
+        Assert.assertEquals(pastMeeting.getNotes(),"A number of issues came up ..");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorExceptionThrownWhenContactsEmpty(){
+        newPastMeeting(1,CreateCalendar(31,7,2016),new HashSet<Contact>(),"A number of issues came up ..");
+    }
 }
