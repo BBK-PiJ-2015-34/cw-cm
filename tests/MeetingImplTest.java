@@ -55,6 +55,18 @@ public class MeetingImplTest {
         newMeeting(-1,CreateCalendar(31,7,2016),contacts);
     }
 
+    @Test(expected = NullPointerException.class)
+    public void constructorThrowsExceptionForNullDate(){
+        contacts = CreateContacts();
+        newMeeting(2,null,contacts);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void constructorThrowsExceptionForNullContacts(){
+        contacts = CreateContacts();
+        newMeeting(2,CreateCalendar(31,7,2016),null);
+    }
+
     private Set<Contact> CreateContacts(){
         contacts = new HashSet<Contact>();
         contacts.add(new ContactImpl(1,"David Wright","Birkbeck Student"));
