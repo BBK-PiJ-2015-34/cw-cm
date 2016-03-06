@@ -40,6 +40,19 @@ public class MeetingImplTest {
         newMeeting(1,CreateCalendar(31,7,2016),contacts);
         Assert.assertEquals(futureMeeting.getId(),1);
         Assert.assertEquals(futureMeeting.getDate().get(Calendar.MONTH),7);
+        Assert.assertNotNull(futureMeeting.getContacts());
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorThrowsExceptionForIDZero(){
+        contacts = CreateContacts();
+        newMeeting(0,CreateCalendar(31,7,2016),contacts);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void constructorThrowsExceptionForIDBelowZero(){
+        contacts = CreateContacts();
+        newMeeting(-1,CreateCalendar(31,7,2016),contacts);
     }
 
     private Set<Contact> CreateContacts(){
