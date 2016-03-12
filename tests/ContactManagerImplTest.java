@@ -57,7 +57,34 @@ public class ContactManagerImplTest {
         CreateContactManager();
         AddContacts();
         contacts = contactManager.getContacts("David");
-        Assert.assertTrue(contacts.size() == 2);
+        Assert.assertTrue(contacts.size() > 1);
+    }
+
+    @Test
+    public void doesEmptyStringReturnAllContacts(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts("");
+        Assert.assertTrue(contacts.size() == 8);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void doesNullReturnException(){
+        //This test passed but the exception wasn't thrown deliberately by my code
+        //Have made changes to getContacts to throw exception
+        CreateContactManager();
+        AddContacts();
+        String nullString = null;
+        contacts = contactManager.getContacts(nullString);
+    }
+
+    @Test
+    public void emptyContactsListReturnedIfNameNotInContacts(){
+        CreateContactManager();
+        AddContacts();
+        String notContact = "Fred";
+        contacts = contactManager.getContacts(notContact);
+        Assert.assertTrue(contacts.size() == 0);
     }
 
     //TODO create private method iterates contacts and can check

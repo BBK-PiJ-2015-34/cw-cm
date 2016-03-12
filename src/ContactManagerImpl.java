@@ -65,7 +65,12 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     @Override
-    public Set<Contact> getContacts(String name) {
+    public Set<Contact> getContacts(String name) throws NullPointerException {
+
+        if (name == null){
+            throw new NullPointerException();
+        }
+
         Set<Contact> sc = new HashSet<>();
 
         Iterator<Map.Entry<Integer,Contact>> iterator = contactsMap.entrySet().iterator();
