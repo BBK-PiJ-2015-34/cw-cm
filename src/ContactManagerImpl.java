@@ -66,7 +66,6 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public Set<Contact> getContacts(String name) throws NullPointerException {
-
         if (name == null){
             throw new NullPointerException();
         }

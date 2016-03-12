@@ -82,8 +82,7 @@ public class ContactManagerImplTest {
     public void emptyContactsListReturnedIfNameNotInContacts(){
         CreateContactManager();
         AddContacts();
-        String notContact = "Fred";
-        contacts = contactManager.getContacts(notContact);
+        contacts = contactManager.getContacts("Fred");
         Assert.assertTrue(contacts.size() == 0);
     }
 
