@@ -12,7 +12,19 @@ public class ContactManagerImplTest {
     private Set<Contact> contacts;
 
     private void CreateContactManager(){
+
         contactManager = new ContactManagerImpl();
+    }
+
+    private void AddContacts(){
+        contactManager.addNewContact("David Beckham","A sporty chap");
+        contactManager.addNewContact("David Wright","A novice programmer");
+        contactManager.addNewContact("Alan Turing","He started it all...");
+        contactManager.addNewContact("Alan Rickman","A fine actor");
+        contactManager.addNewContact("Grace Hopper","No Grace, no Java...");
+        contactManager.addNewContact("Grace Kelly","The graceful actor");
+        contactManager.addNewContact("Ada Lovelace","The first programmer");
+        contactManager.addNewContact("Niklaus Wirth","Created the Pascal programming language");
     }
 
     @After
@@ -38,6 +50,14 @@ public class ContactManagerImplTest {
         id = contactManager.addNewContact("Alan Turing","He started it all...");
         contacts = contactManager.getContacts("Alan Turing");
         Assert.assertTrue(contacts.size() == 1);
+    }
+
+    @Test
+    public void isGetContactsReturningSubstringContacts(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts("David");
+        Assert.assertTrue(contacts.size() == 2);
     }
 
     //TODO create private method iterates contacts and can check

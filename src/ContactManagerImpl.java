@@ -71,7 +71,7 @@ public class ContactManagerImpl implements ContactManager {
         Iterator<Map.Entry<Integer,Contact>> iterator = contactsMap.entrySet().iterator();
         while(iterator.hasNext()){
             Map.Entry<Integer,Contact> contactEntry = iterator.next();
-            if(contactEntry.getValue().getName() == name){
+            if(contactEntry.getValue().getName().contains(name)) {
                 sc.add(contactEntry.getValue());
             }
         }
