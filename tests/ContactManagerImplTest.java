@@ -2,6 +2,7 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.Calendar;
 import java.util.Set;
 
 /**
@@ -149,6 +150,62 @@ public class ContactManagerImplTest {
         AddContacts();
         contacts = contactManager.getContacts(1,2,3,2000);
     }
+
+    @Test
+    public void doesAddFutureMeetingReturnId(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,1);
+        int id = contactManager.addFutureMeeting(contacts, date);
+        Assert.assertTrue(id == 1);
+    }
+
+    @Test
+    public void doesIdReturnFutureMeeting(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,2);
+        int id = contactManager.addFutureMeeting(contacts, date);
+        FutureMeeting fm = contactManager.getFutureMeeting(id);
+        Assert.assertNotNull(fm);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void throwsExceptionWhenDateNull(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        int id = contactManager.addFutureMeeting(contacts, null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenDateInPast(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-1);
+        int id = contactManager.addFutureMeeting(contacts, date);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenContactUnknown(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        contacts.add(new ContactImpl(66,"Fred Bloggs"));
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,1);
+        int id = contactManager.addFutureMeeting(contacts, date);
+    }
+
+//    private FutureMeeting CreateFutureMeeting(int id, Calendar cal, Set<Contact> conts){
+//        return new FutureMeetingImpl(id,cal,conts);
+//    }
 
     //TODO create private method iterates contacts and can check
     // if I am getting a back a certain contact value

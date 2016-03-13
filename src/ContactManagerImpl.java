@@ -7,15 +7,40 @@ public class ContactManagerImpl implements ContactManager {
 
     private HashMap<Integer, Contact> contactsMap;
     private int contactsMapIndex;
+    private HashMap<Integer, FutureMeeting> futureMeetingMap;
+    private int futureMeetingMapIndex;
+    private Calendar theDate;
 
     public ContactManagerImpl(){
         contactsMap = new HashMap<>();
         contactsMapIndex = 1;
+        futureMeetingMap = new HashMap<>();
+        futureMeetingMapIndex = 1;
+        theDate = null;
     }
 
     @Override
-    public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-        return 0;
+    public int addFutureMeeting(Set<Contact> contacts, Calendar date)  throws IllegalArgumentException, NullPointerException {
+
+        if(date == null){
+            throw new NullPointerException();
+        }
+
+        Calendar todaysDate = Calendar.getInstance();
+
+        if(todaysDate.after(date)){
+            throw new IllegalArgumentException();
+        }
+
+        Iterator iterator = contacts.iterator();
+        while (iterator.hasNext()){
+            if (contactsMap.containsValue(iterator.next()) == false ){
+                throw new IllegalArgumentException();
+            }
+        }
+
+        futureMeetingMap.put(futureMeetingMapIndex, new FutureMeetingImpl(futureMeetingMapIndex,date,contacts));
+        return futureMeetingMapIndex++;
     }
 
     @Override
@@ -25,11 +50,13 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public FutureMeeting getFutureMeeting(int id) {
-        return null;
+
+        return futureMeetingMap.get(id);
     }
 
     @Override
     public Meeting getMeeting(int id) {
+
         return null;
     }
 
@@ -118,5 +145,35 @@ public class ContactManagerImpl implements ContactManager {
     @Override
     public void flush() {
 
+    }
+
+    /**
+     * Returns the currentDate, or the current value of theDate if theDate is not null
+     *
+     * @return void
+     */
+
+    private Calendar getTheDate(){
+        if (theDate == null){
+            theDate = Calendar.getInstance();
+        }
+
+        return theDate;
+    }
+
+
+    /**
+     * Sets the theDate field to a particular date.
+     *
+     * This method should only be called for testing purposes
+     *
+     * @param day an int between 1 and 31
+     * @param month an int between 1 and 12
+     * @param year an
+     * @return void
+     */
+    public void setTheDate(int day, int month, int year){
+        theDate = Calendar.getInstance();
+        theDate.set(year,month,day);
     }
 }

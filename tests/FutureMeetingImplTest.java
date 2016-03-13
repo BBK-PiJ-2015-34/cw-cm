@@ -28,7 +28,7 @@ public class FutureMeetingImplTest {
         Assert.assertNotNull(futureMeeting);
     }
 
-    private Calendar CreateCalendar(int day, int month, int year) {
+    static public Calendar CreateCalendar(int day, int month, int year) {
         Calendar cal = Calendar.getInstance();
         cal.set(year, month, day);
         return cal;
