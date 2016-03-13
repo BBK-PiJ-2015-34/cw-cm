@@ -59,7 +59,21 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     @Override
-    public int addNewContact(String name, String notes) {
+    public int addNewContact(String name, String notes) throws IllegalArgumentException, NullPointerException {
+        if(name == ""){
+            throw new IllegalArgumentException();
+        }
+        if(name == null){
+            throw new NullPointerException();
+        }
+
+        if (notes == ""){
+            throw new IllegalArgumentException();
+        }
+
+        if (notes == null){
+            throw new NullPointerException();
+        }
         contactsMap.put(contactsMapIndex,new ContactImpl(contactsMapIndex,name,notes));
         return contactsMapIndex++;
     }

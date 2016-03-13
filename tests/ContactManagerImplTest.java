@@ -52,6 +52,30 @@ public class ContactManagerImplTest {
         Assert.assertTrue(contacts.size() == 1);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenNameEmpty(){
+        CreateContactManager();
+        contactManager.addNewContact("","A novice programmer");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenNotesEmpty(){
+        CreateContactManager();
+        contactManager.addNewContact("Fred Dread","");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void throwsExceptionWhenNameNull(){
+        CreateContactManager();
+        contactManager.addNewContact(null,"A novice programmer");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void throwsExceptionWhenNotesNull(){
+        CreateContactManager();
+        contactManager.addNewContact("Fred Dread",null);
+    }
+
     @Test
     public void isGetContactsReturningSubstringContacts(){
         CreateContactManager();
