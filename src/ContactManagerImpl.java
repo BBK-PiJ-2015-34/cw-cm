@@ -97,8 +97,22 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     @Override
-    public Set<Contact> getContacts(int... ids) {
-        return null;
+    public Set<Contact> getContacts(int... ids) throws IllegalArgumentException {
+        if (ids.length == 0){
+            throw new IllegalArgumentException();
+        }
+        Set<Contact> sc = new HashSet<>();
+        for (int i =0; i < ids.length; i++){
+            int id = ids[i];
+            if (contactsMap.containsKey(id)){
+                sc.add(contactsMap.get(id));}
+            else {
+                throw new IllegalArgumentException();
+            }
+
+        }
+
+        return sc;
     }
 
     @Override

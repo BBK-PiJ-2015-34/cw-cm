@@ -110,6 +110,46 @@ public class ContactManagerImplTest {
         Assert.assertTrue(contacts.size() == 0);
     }
 
+    @Test
+    public void returnSingleContactFrom1Id(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1);
+        Assert.assertTrue(contacts.size() == 1);
+    }
+
+    @Test
+    public void returnMultipleContactsFromManyIds(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3);
+        Assert.assertTrue(contacts.size() == 3);
+
+        contacts = contactManager.getContacts(4,5,6,7);
+        Assert.assertTrue(contacts.size() == 4);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionIfNoIdProvided(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts();
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionIfIdNotValid(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(2000);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionIfOneOfTheIdsNotValid(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,2000);
+    }
+
     //TODO create private method iterates contacts and can check
     // if I am getting a back a certain contact value
 
