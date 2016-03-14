@@ -271,6 +271,72 @@ public class ContactManagerImplTest {
         contactManager.addNewPastMeeting(contacts,date,null);
     }
 
+    @Test
+    public void getPastMeetingReturnsMeetingFromId(){
+        CreateContactManager();
+        AddContacts();
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-3);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(contacts,date,"An excellent meeting");
+
+        List<Meeting> meetings = contactManager.getMeetingListOn(date);
+        int id = meetings.get(0).getId();
+        Assert.assertEquals(contactManager.getPastMeeting(id).getNotes(),"An excellent meeting");
+    }
+
+    @Test
+    public void getPastMeetingReturnsNullForNonExistentId(){
+        CreateContactManager();
+        Assert.assertNull(contactManager.getPastMeeting(3000));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void getPastMeetingThrowsExceptionWhenFutureMeetingId(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,1);
+        int id = contactManager.addFutureMeeting(contacts, date);
+        contactManager.getPastMeeting(id);
+    }
+
+    @Test
+    public void getFutureMeetWithId(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,1);
+        int id = contactManager.addFutureMeeting(contacts, date);
+        Assert.assertNotNull(contactManager.getFutureMeeting(id));
+    }
+
+    @Test
+    public void getFutureMeetingWithNonExistentId(){
+        CreateContactManager();
+        Assert.assertNull(contactManager.getFutureMeeting(4000));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getFutureMeetingThrowsExceptionForPastMeetingId(){
+        CreateContactManager();
+        AddContacts();
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-3);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(contacts,date,"An excellent meeting");
+
+        List<Meeting> meetings = contactManager.getMeetingListOn(date);
+        int id = meetings.get(0).getId();
+        contactManager.getFutureMeeting(id);
+    }
+
 //    private FutureMeeting CreateFutureMeeting(int id, Calendar cal, Set<Contact> conts){
 //        return new FutureMeetingImpl(id,cal,conts);
 //    }

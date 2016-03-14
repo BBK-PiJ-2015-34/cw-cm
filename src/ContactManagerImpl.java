@@ -9,18 +9,16 @@ public class ContactManagerImpl implements ContactManager {
     private HashMap<Integer, Contact> contactsMap;
     private int contactsMapIndex;
     private HashMap<Integer, FutureMeeting> futureMeetingMap;
-    private int futureMeetingMapIndex;
+    private int MeetingMapIndex;
     private HashMap<Integer, PastMeeting> pastMeetingMap;
-    private int pastMeetingMapIndex;
     private Calendar theDate;
 
     public ContactManagerImpl(){
         contactsMap = new HashMap<>();
         contactsMapIndex = 1;
         futureMeetingMap = new HashMap<>();
-        futureMeetingMapIndex = 1;
+        MeetingMapIndex = 1;
         pastMeetingMap = new HashMap<>();
-        pastMeetingMapIndex = 1;
         theDate = null;
     }
 
@@ -41,19 +39,29 @@ public class ContactManagerImpl implements ContactManager {
             throw new IllegalArgumentException();
         }
 
-        futureMeetingMap.put(futureMeetingMapIndex, new FutureMeetingImpl(futureMeetingMapIndex,date,contacts));
-        return futureMeetingMapIndex++;
+        futureMeetingMap.put(MeetingMapIndex, new FutureMeetingImpl(MeetingMapIndex,date,contacts));
+        return MeetingMapIndex++;
     }
 
 
 
     @Override
-    public PastMeeting getPastMeeting(int id) {
+    public PastMeeting getPastMeeting(int id) throws IllegalStateException{
+        if(futureMeetingMap.containsKey(id)){
+            throw new IllegalStateException();
+        }
+        if(pastMeetingMap.containsKey(id)){
+            return pastMeetingMap.get(id);
+        }
+
         return null;
     }
 
     @Override
-    public FutureMeeting getFutureMeeting(int id) {
+    public FutureMeeting getFutureMeeting(int id) throws IllegalArgumentException {
+        if(pastMeetingMap.containsKey(id)){
+            throw new IllegalArgumentException();
+        }
 
         return futureMeetingMap.get(id);
     }
@@ -103,8 +111,8 @@ public class ContactManagerImpl implements ContactManager {
             throw new NullPointerException();
         }
 
-        pastMeetingMap.put(pastMeetingMapIndex, new PastMeetingImpl(pastMeetingMapIndex,date,contacts,text));
-        pastMeetingMapIndex++;
+        pastMeetingMap.put(MeetingMapIndex, new PastMeetingImpl(MeetingMapIndex,date,contacts,text));
+        MeetingMapIndex++;
     }
 
     @Override
