@@ -175,6 +175,16 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public PastMeeting addMeetingNotes(int id, String text) {
+        PastMeeting pastMeeting;
+        if(pastMeetingMap.containsKey(id)){
+            pastMeeting = pastMeetingMap.get(id);
+            Calendar date = pastMeeting.getDate();
+            Set<Contact> contact = pastMeeting.getContacts();
+            pastMeetingMap.remove(id);
+            pastMeetingMap.put(id, new PastMeetingImpl(id,pastMeeting.getDate(),pastMeeting.getContacts(),text));
+            return pastMeetingMap.get(id);
+        }
+
         return null;
     }
 
