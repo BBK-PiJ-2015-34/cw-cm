@@ -76,7 +76,15 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     @Override
-    public List<Meeting> getFutureMeetingList(Contact contact) {
+    public List<Meeting> getFutureMeetingList(Contact contact) throws IllegalArgumentException, NullPointerException {
+
+        if(contactsMap.containsKey(contact.getId()) == false){
+            throw new IllegalArgumentException();
+        }
+
+        if(contact == null){
+            throw new NullPointerException();
+        }
 
         List<Meeting> meetings = new ArrayList<>();
         Iterator<Map.Entry<Integer,FutureMeeting>> iterator = futureMeetingMap.entrySet().iterator();
@@ -121,7 +129,34 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public List<PastMeeting> getPastMeetingListFor(Contact contact) {
-        return null;
+        if(contactsMap.containsKey(contact.getId()) == false){
+            throw new IllegalArgumentException();
+        }
+
+        if(contact == null){
+            throw new NullPointerException();
+        }
+
+        List<PastMeeting> meetings = new ArrayList<>();
+        Iterator<Map.Entry<Integer,PastMeeting>> iterator = pastMeetingMap.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<Integer,PastMeeting> meetingEntry = iterator.next();
+            Set<Contact> contacts = meetingEntry.getValue().getContacts();
+            Iterator listIterator = contacts.iterator();
+            boolean hasContact = false;
+            while(listIterator.hasNext()){
+                Contact contactEntry = (Contact)listIterator.next();
+                if(contactEntry.getId() == contact.getId()){
+                    hasContact = true;
+                }
+            }
+            if (hasContact){
+                meetings.add(meetingEntry.getValue());
+            }
+
+        }
+        Collections.sort(meetings,new DateComparator());
+        return meetings;
     }
 
     @Override

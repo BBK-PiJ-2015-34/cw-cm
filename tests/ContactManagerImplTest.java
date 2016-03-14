@@ -382,4 +382,29 @@ public class ContactManagerImplTest {
         Assert.assertEquals(contactManager.getFutureMeetingList(cons).size(),2);
     }
 
+    @Test
+    public void getPastMeetingListNotNull(){
+        CreateContactManager();
+        AddContacts();
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-2);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(contacts,date,"Four attended");
+
+        date = Calendar.getInstance();
+        date.add(Calendar.DATE,-4);
+
+        contacts = contactManager.getContacts(3,4,5,6);
+        contactManager.addNewPastMeeting(contacts,date,"Any other business");
+
+        Contact cons = contactManager.getContacts(3).iterator().next();
+
+        List<PastMeeting> meetings = contactManager.getPastMeetingListFor(cons);
+
+        Assert.assertNotNull(meetings);
+        Assert.assertEquals(contactManager.getPastMeetingListFor(cons).size(),2);
+    }
+
 }
