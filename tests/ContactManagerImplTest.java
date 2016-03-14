@@ -3,7 +3,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Calendar;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by davidwright on 06/03/2016.
@@ -201,6 +201,74 @@ public class ContactManagerImplTest {
         Calendar date = Calendar.getInstance();
         date.add(Calendar.DATE,1);
         int id = contactManager.addFutureMeeting(contacts, date);
+    }
+
+    @Test
+    public void areNewPastMeetingsBeingAdded(){
+        CreateContactManager();
+        AddContacts();
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-3);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(contacts,date,"An excellent meeting");
+
+        contacts = contactManager.getContacts(3,4,5,6);
+        contactManager.addNewPastMeeting(contacts,date,"Another excellent meeting");
+
+        Calendar anotherDate = Calendar.getInstance();
+        contacts = contactManager.getContacts(8,2,1,5);
+        contactManager.addNewPastMeeting(contacts,anotherDate,"Another excellent meeting");
+
+        List<Meeting> meetings = contactManager.getMeetingListOn(date);
+        Assert.assertNotNull(meetings);
+        Assert.assertEquals(meetings.size(),2);
+
+
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addNewPastMeetingThrowsExceptionWhenDateNull(){
+        CreateContactManager();
+        AddContacts();
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(contacts,null,"An excellent meeting");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addNewPastMeetingThrowsExceptionWhenNullContacts(){
+        CreateContactManager();
+        AddContacts();
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-1);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(null,date,"An excellent meeting");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addNewPastMeetingThrowsExceptionWhenEmptyContacts(){
+        CreateContactManager();
+        AddContacts();
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-1);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contacts.clear();
+        contactManager.addNewPastMeeting(contacts,date,"An excellent meeting");
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void addNewPastMeetingThrowsExceptionWhenNullNotes(){
+        CreateContactManager();
+        AddContacts();
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,-1);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(contacts,date,null);
     }
 
 //    private FutureMeeting CreateFutureMeeting(int id, Calendar cal, Set<Contact> conts){

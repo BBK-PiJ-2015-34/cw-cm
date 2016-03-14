@@ -1,5 +1,6 @@
 import java.util.*;
 
+
 /**
  * Created by davidwright on 06/03/2016.
  */
@@ -9,6 +10,8 @@ public class ContactManagerImpl implements ContactManager {
     private int contactsMapIndex;
     private HashMap<Integer, FutureMeeting> futureMeetingMap;
     private int futureMeetingMapIndex;
+    private HashMap<Integer, PastMeeting> pastMeetingMap;
+    private int pastMeetingMapIndex;
     private Calendar theDate;
 
     public ContactManagerImpl(){
@@ -16,11 +19,13 @@ public class ContactManagerImpl implements ContactManager {
         contactsMapIndex = 1;
         futureMeetingMap = new HashMap<>();
         futureMeetingMapIndex = 1;
+        pastMeetingMap = new HashMap<>();
+        pastMeetingMapIndex = 1;
         theDate = null;
     }
 
     @Override
-    public int addFutureMeeting(Set<Contact> contacts, Calendar date)  throws IllegalArgumentException, NullPointerException {
+    public int addFutureMeeting(Set<Contact> contacts, Calendar date) throws IllegalArgumentException, NullPointerException {
 
         if(date == null){
             throw new NullPointerException();
@@ -32,16 +37,15 @@ public class ContactManagerImpl implements ContactManager {
             throw new IllegalArgumentException();
         }
 
-        Iterator iterator = contacts.iterator();
-        while (iterator.hasNext()){
-            if (contactsMap.containsValue(iterator.next()) == false ){
-                throw new IllegalArgumentException();
-            }
+        if(contactExists(contacts) == false){
+            throw new IllegalArgumentException();
         }
 
         futureMeetingMap.put(futureMeetingMapIndex, new FutureMeetingImpl(futureMeetingMapIndex,date,contacts));
         return futureMeetingMapIndex++;
     }
+
+
 
     @Override
     public PastMeeting getPastMeeting(int id) {
@@ -66,8 +70,22 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     @Override
-    public List<Meeting> getMeetingListOn(Calendar date) {
-        return null;
+    public List<Meeting> getMeetingListOn(Calendar date) throws NullPointerException {
+        if(date == null){
+            throw new NullPointerException();
+        }
+
+        List<Meeting> me = new ArrayList<Meeting>();
+
+        Iterator<Map.Entry<Integer,PastMeeting>> iterator = pastMeetingMap.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<Integer,PastMeeting> meetingEntry = iterator.next();
+            if(meetingEntry.getValue().getDate().compareTo(date) == 0) {
+                me.add(meetingEntry.getValue());
+            }
+        }
+        Collections.sort(me,new DateComparator());
+        return me;
     }
 
     @Override
@@ -76,8 +94,17 @@ public class ContactManagerImpl implements ContactManager {
     }
 
     @Override
-    public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {
+    public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) throws IllegalArgumentException, NullPointerException {
 
+        if((contactExists(contacts) == false) || contacts.size() == 0){
+            throw new IllegalArgumentException();
+        }
+        if (contacts == null || date == null || text == null){
+            throw new NullPointerException();
+        }
+
+        pastMeetingMap.put(pastMeetingMapIndex, new PastMeetingImpl(pastMeetingMapIndex,date,contacts,text));
+        pastMeetingMapIndex++;
     }
 
     @Override
@@ -136,7 +163,6 @@ public class ContactManagerImpl implements ContactManager {
             else {
                 throw new IllegalArgumentException();
             }
-
         }
 
         return sc;
@@ -147,33 +173,27 @@ public class ContactManagerImpl implements ContactManager {
 
     }
 
-    /**
-     * Returns the currentDate, or the current value of theDate if theDate is not null
-     *
-     * @return void
-     */
-
-    private Calendar getTheDate(){
-        if (theDate == null){
-            theDate = Calendar.getInstance();
+    private boolean contactExists(Set<Contact> contacts) {
+        Iterator iterator = contacts.iterator();
+        while (iterator.hasNext()){
+            if (contactsMap.containsValue(iterator.next()) == false ){
+                return false;
+            }
         }
-
-        return theDate;
+        return true;
     }
+}
 
 
-    /**
-     * Sets the theDate field to a particular date.
-     *
-     * This method should only be called for testing purposes
-     *
-     * @param day an int between 1 and 31
-     * @param month an int between 1 and 12
-     * @param year an
-     * @return void
-     */
-    public void setTheDate(int day, int month, int year){
-        theDate = Calendar.getInstance();
-        theDate.set(year,month,day);
+class DateComparator implements Comparator<Meeting>{
+
+    @Override
+    public int compare(Meeting o1, Meeting o2) {
+        if(o1.getDate().after(o2.getDate())){
+            return -1;
+        } else if (o1.getDate().before(o2.getDate())){
+            return 1;
+        }
+        return 0;
     }
 }
