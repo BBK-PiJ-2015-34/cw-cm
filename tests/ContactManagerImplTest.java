@@ -368,12 +368,18 @@ public class ContactManagerImplTest {
         contacts = contactManager.getContacts(1,2,3,4);
         contactManager.addFutureMeeting(contacts,date);
 
+        date = Calendar.getInstance();
+        date.add(Calendar.DATE,4);
+
         contacts = contactManager.getContacts(3,4,5,6);
         contactManager.addFutureMeeting(contacts,date);
 
         Contact cons = contactManager.getContacts(3).iterator().next();
 
-        Assert.assertNotNull(contactManager.getFutureMeetingList(cons));
+        List<Meeting> meetings = contactManager.getFutureMeetingList(cons);
+
+        Assert.assertNotNull(meetings);
+        Assert.assertEquals(contactManager.getFutureMeetingList(cons).size(),2);
     }
 
 }

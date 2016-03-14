@@ -77,7 +77,27 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public List<Meeting> getFutureMeetingList(Contact contact) {
-        return null;
+
+        List<Meeting> meetings = new ArrayList<>();
+        Iterator<Map.Entry<Integer,FutureMeeting>> iterator = futureMeetingMap.entrySet().iterator();
+        while(iterator.hasNext()){
+            Map.Entry<Integer,FutureMeeting> meetingEntry = iterator.next();
+            Set<Contact> contacts = meetingEntry.getValue().getContacts();
+            Iterator listIterator = contacts.iterator();
+            boolean hasContact = false;
+            while(listIterator.hasNext()){
+                Contact contactEntry = (Contact)listIterator.next();
+                if(contactEntry.getId() == contact.getId()){
+                    hasContact = true;
+                }
+            }
+            if (hasContact){
+                meetings.add(meetingEntry.getValue());
+            }
+
+        }
+        Collections.sort(meetings,new DateComparator());
+        return meetings;
     }
 
     @Override
@@ -86,7 +106,7 @@ public class ContactManagerImpl implements ContactManager {
             throw new NullPointerException();
         }
 
-        List<Meeting> me = new ArrayList<Meeting>();
+        List<Meeting> me = new ArrayList<>();
 
         Iterator<Map.Entry<Integer,PastMeeting>> iterator = pastMeetingMap.entrySet().iterator();
         while(iterator.hasNext()){
@@ -201,9 +221,9 @@ class DateComparator implements Comparator<Meeting>{
     @Override
     public int compare(Meeting o1, Meeting o2) {
         if(o1.getDate().after(o2.getDate())){
-            return -1;
-        } else if (o1.getDate().before(o2.getDate())){
             return 1;
+        } else if (o1.getDate().before(o2.getDate())){
+            return -1;
         }
         return 0;
     }
