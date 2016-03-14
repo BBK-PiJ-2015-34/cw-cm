@@ -337,11 +337,43 @@ public class ContactManagerImplTest {
         contactManager.getFutureMeeting(id);
     }
 
-//    private FutureMeeting CreateFutureMeeting(int id, Calendar cal, Set<Contact> conts){
-//        return new FutureMeetingImpl(id,cal,conts);
-//    }
+    @Test
+    public void getMeetingWithID(){
+        CreateContactManager();
+        AddContacts();
+        contacts = contactManager.getContacts(1,2,3,4);
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,1);
+        int id = contactManager.addFutureMeeting(contacts, date);
 
-    //TODO create private method iterates contacts and can check
-    // if I am getting a back a certain contact value
+        Assert.assertNotNull(contactManager.getMeeting(id));
+
+        date = Calendar.getInstance();
+        date.add(Calendar.DATE,-3);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addNewPastMeeting(contacts,date,"An excellent meeting");
+
+        Assert.assertNotNull(contactManager.getMeeting(2));
+    }
+
+    @Test
+    public void getFutureMeetingListNotNull(){
+        CreateContactManager();
+        AddContacts();
+
+        Calendar date = Calendar.getInstance();
+        date.add(Calendar.DATE,2);
+
+        contacts = contactManager.getContacts(1,2,3,4);
+        contactManager.addFutureMeeting(contacts,date);
+
+        contacts = contactManager.getContacts(3,4,5,6);
+        contactManager.addFutureMeeting(contacts,date);
+
+        Contact cons = contactManager.getContacts(3).iterator().next();
+
+        Assert.assertNotNull(contactManager.getFutureMeetingList(cons));
+    }
 
 }

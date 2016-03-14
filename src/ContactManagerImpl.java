@@ -68,8 +68,11 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public Meeting getMeeting(int id) {
-
-        return null;
+        if(pastMeetingMap.containsKey(id)){
+            return pastMeetingMap.get(id);
+        } else {
+            return futureMeetingMap.get(id);
+        }
     }
 
     @Override
